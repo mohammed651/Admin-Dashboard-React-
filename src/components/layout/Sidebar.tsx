@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { NotificationDropdown } from "./NotificationDropdown";
 
 const navigationItems = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -41,7 +42,7 @@ export default function Sidebar({ isMobileOpen, onClose }: { isMobileOpen?: bool
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 h-screen transition-all duration-300 flex flex-col fixed lg:relative z-50",
+        "bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 h-screen transition-all duration-300 flex flex-col  fixed lg:relative z-50",
         expanded ? "w-64" : "w-20",
         isMobile && !isMobileOpen ? "hidden" : "block",
         isMobile ? "left-0 top-0" : ""
@@ -96,10 +97,7 @@ export default function Sidebar({ isMobileOpen, onClose }: { isMobileOpen?: bool
         <div className={cn("flex items-center", expanded ? "justify-between" : "justify-center")}>
           <div className="flex items-center space-x-3">
             <div className="relative">
-              <Bell size={20} className="text-gray-500" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs flex items-center justify-center rounded-full">
-                3
-              </span>
+              <NotificationDropdown />
             </div>
             {expanded && (
               <div className="flex-shrink-0">

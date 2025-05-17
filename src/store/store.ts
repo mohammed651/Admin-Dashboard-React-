@@ -10,8 +10,10 @@ import { UserState } from "@/types";
 import videoSlice, { VideoState } from "./slices/videoSlice.ts";
 import assignmentSlice from "./slices/assignmentSlice";
 import questionSlice from "./slices/questionSlice";
+import notificationSlice from "./slices/notificationSlice.ts";
 
 export interface RootState {
+  notifications: any;
   course: ReturnType<typeof courseSlice.reducer>;
   module: ReturnType<typeof moduleSlice.reducer>;
   topic: ReturnType<typeof topicSlice.reducer>;
@@ -34,6 +36,7 @@ const store = configureStore({
     video: videoSlice.reducer,
     assignment: assignmentSlice.reducer,
     question: questionSlice.reducer,
+    notifications: notificationSlice.reducer,
   },
 });
 
