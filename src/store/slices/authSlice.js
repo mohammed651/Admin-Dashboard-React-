@@ -28,11 +28,15 @@ export const login = createAsyncThunk(
         const email = data.user.email;
         const username = data.user.username;
         const role = data.user.role;
+        const userImage = data.user.userImage;
+
         // Save token to localStorage
         localStorage.setItem('userToken', token);
         localStorage.setItem('email', email);
         localStorage.setItem('username', username);
         localStorage.setItem('role', role);
+        localStorage.setItem('userImage', userImage);
+
 
         return {
           token,

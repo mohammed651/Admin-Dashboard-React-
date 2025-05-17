@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
@@ -12,11 +11,12 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const navigationItems = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Courses", href: "/courses", icon: Book },
-   { name: "Instructors", href: "/instructors", icon: Users },
+  { name: "Instructors", href: "/instructors", icon: Users },
   { name: "Categories", href: "/categories", icon: ChartBar },
   { name: "Users", href: "/users", icon: Users },
   { name: "Success Stories", href: "/SuccessStory", icon: Users },
@@ -25,31 +25,46 @@ const navigationItems = [
   { name: "Settings", href: "/settings", icon: Settings },
 ];
 const email = localStorage.getItem("email");
-
 const username = localStorage.getItem("username");
-export default function Sidebar() {
+const userImage = localStorage.getItem("userImage");
+
+export default function Sidebar({ isMobileOpen, onClose }: { isMobileOpen?: boolean, onClose?: () => void }) {
   const [expanded, setExpanded] = useState(true);
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    if (isMobile) {
+      setExpanded(false);
+    }
+  }, [isMobile]);
 
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 h-screen transition-all duration-300 flex flex-col",
-        expanded ? "w-64" : "w-20"
+        "bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 h-screen transition-all duration-300 flex flex-col fixed lg:relative z-50",
+        expanded ? "w-64" : "w-20",
+        isMobile && !isMobileOpen ? "hidden" : "block",
+        isMobile ? "left-0 top-0" : ""
       )}
     >
-      <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-800">
+      <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-800 gap-1">
         <div className="flex items-center">
           {expanded && (
-            <img src="/public/download.svg" alt="coursera logo" className="w-20 h-20 rounded-full " />
-            // <h1 className="text-xl font-bold text-coursera-blue ml-2"> Coursera</h1>
+            <img src="/download.svg" alt="coursera logo" className="w-20 h-20 rounded-full" />
           )}
           {!expanded && <div className="w-8 h-8 rounded-full bg-coursera-blue text-white flex items-center justify-center font-bold">C</div>}
         </div>
         <button
-          onClick={() => setExpanded(!expanded)}
+          onClick={() => {
+            if (isMobile) {
+              onClose?.();
+            } else {
+              setExpanded(!expanded);
+            }
+          }}
           className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
         >
-          {expanded ? <X size={20} /> : <Menu size={20} />}
+          {expanded || isMobile ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
@@ -59,6 +74,7 @@ export default function Sidebar() {
             <NavLink
               key={item.name}
               to={item.href}
+              onClick={() => isMobile && onClose?.()}
               className={({ isActive }) =>
                 cn(
                   "flex items-center px-2 py-2 text-base font-medium rounded-md transition-colors",
@@ -88,7 +104,7 @@ export default function Sidebar() {
             {expanded && (
               <div className="flex-shrink-0">
                 <div className="w-8 h-8 rounded-full bg-coursera-blue text-white flex items-center justify-center font-bold">
-                  A
+                  {username?.charAt(0) || 'A'}
                 </div>
               </div>
             )}
