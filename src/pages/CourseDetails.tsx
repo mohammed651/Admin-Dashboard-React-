@@ -204,13 +204,13 @@ export default function CourseDetails() {
     }
 
     try {
-      await dispatch(
+     const result = await dispatch(
         createTopic({
           moduleId: selectedModuleId,
           topicData: newTopic,
         })
       ).unwrap();
-
+      setSelectedTopicId(result.data._id);
       setNewTopic({ title: "", description: "" });
       setTopicDialogOpen(false);
       setContentTypeDialogOpen(true);
@@ -702,7 +702,7 @@ export default function CourseDetails() {
   }
 
   const courseData: CourseData = currentCourse.data;
-  // console.log(courseData);
+  console.log(courseData);
 
   return (
     <DashboardLayout>

@@ -21,16 +21,31 @@ export interface Instructor {
   updatedAt?: Date; // Added by timestamps
 }
 
+export interface MultilangText {
+  en: string;
+  ar: string;
+}
+
+export interface Outcomes {
+  outComesTitle: MultilangText;
+  outComesDescription: string[];
+}
+
 export interface Course {
   _id: string;
-  name: string;
+  name: string | MultilangText;
   instructor: string;
   categoryID: string;
-  description: string;
-  IfYouLike?: string;
-  IfYouLikeValue?: string;
-  SkillsNeeded?: string;
-  SkillsNeededValue?: string;
+  description: string | MultilangText;
+  IfYouLike?: string | MultilangText;
+  IfYouLikeValue?: string | MultilangText;
+  SkillsNeeded?: string | MultilangText;
+  SkillsNeededValue?: string | MultilangText;
+  jobTitle?: string | MultilangText;
+  Skills?: string | string[];
+  WhatYouWillLearn?: string | string[];
+  outComes?: string | Outcomes;
+  relatedCourses?: string | any[]; // حدد النوع الحقيقي لو عارف شكل العناصر
   organization?: string;
   logoImage?: string;
   courseImage?: string;
@@ -110,11 +125,18 @@ export interface User {
 
 export interface UserState {
   users: User[];
+    currentUserId: null, // جديد
   loading: boolean;
   error: string | null;
   searchQuery: string;
   roleFilter: 'all' | 'User' | 'Admin' | 'Instructor'; // Updated to match role types
   statusFilter: 'all' | 'active' | 'inactive';
+  updateLoading: boolean;
+  updateSuccess: string | null;
+  updateError: string | null;
+  updateOwnLoading:  boolean; // لازم يكون boolean,
+updateOwnSuccess: string | null; // لازم يكون string أو null
+updateOwnError: string | null; // لازم يكون string أو null
 }
 export interface UserUpdateData {
   firstName?: string;

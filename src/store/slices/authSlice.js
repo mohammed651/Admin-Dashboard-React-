@@ -15,7 +15,7 @@ export const login = createAsyncThunk(
 
       const data = await response.json();
       console.log('Login response:', data); // Debugging line
-      
+
 
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
@@ -23,12 +23,19 @@ export const login = createAsyncThunk(
 
       if (data.message === 'Valid Credentials') {
         console.log('Login successful:', data); // Debugging line
-        
+
         const token = data.userToken;
         const email = data.user.email;
         const username = data.user.username;
         const role = data.user.role;
         const userImage = data.user.userImage;
+        const firstName = data.user.firstName; // إضافة
+        const lastName = data.user.lastName;   // إضافة
+        const phone = data.user.phone;        // إضافة
+        const location = data.user.location;  // إضافة
+        const gender = data.user.gender;      // إضافة
+        const dob = data.user.dob;            // إضافة (تاريخ الميلاد)
+        const bio = data.user.bio;            // إضافة (السيرة الذاتية)
 
         // Save token to localStorage
         localStorage.setItem('userToken', token);
@@ -36,6 +43,13 @@ export const login = createAsyncThunk(
         localStorage.setItem('username', username);
         localStorage.setItem('role', role);
         localStorage.setItem('userImage', userImage);
+        localStorage.setItem('firstName', firstName);    // إضافة
+        localStorage.setItem('lastName', lastName);      // إضافة
+        localStorage.setItem('phone', phone);            // إضافة
+        localStorage.setItem('location', location);      // إضافة
+        localStorage.setItem('gender', gender);          // إضافة
+        localStorage.setItem('dob', dob);                // إضافة
+        localStorage.setItem('bio', bio);                // إضافة
 
 
         return {
