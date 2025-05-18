@@ -58,11 +58,15 @@ export default function SuccessStoriesPage() {
     dispatch(fetchSuccessStories());
   }, [dispatch]);
 
-  const filteredStories = (stories || []).filter(
-    (story) =>
-      story.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      story.certificateName.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredStories = Array.isArray(stories)
+    ? stories.filter(
+        (story) =>
+          story.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          story.certificateName
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
+      )
+    : [];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -150,17 +154,19 @@ export default function SuccessStoriesPage() {
     );
   }
 
-  if (status === "failed") {
-    return (
-      <DashboardLayout>
-        <div className="p-4 text-red-500">Error: {error}</div>
-      </DashboardLayout>
-    );
-  }
+  
   // console.log(stories);
 
   return (
     <DashboardLayout>
+      {status === "failed" && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+          <strong className="font-bold">Error:</strong>
+          <span className="block sm:inline ml-2">
+            {error || "Something went wrong."}
+          </span>
+        </div>
+      )}
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold tracking-tight">Success Stories</h1>

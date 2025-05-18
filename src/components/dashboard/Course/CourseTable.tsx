@@ -271,7 +271,9 @@ export default function CourseTable({
   if (loading) return <div className="p-4 text-center">Loading courses...</div>;
   if (error) return <div className="p-4 text-center text-red-500">Error loading courses</div>;
 
-  console.log(categories.map((category) => category._id));
+  // console.log(categories.map((category) => category._id));
+
+  // console.log(courses);
   
   return (
     <ErrorBoundary

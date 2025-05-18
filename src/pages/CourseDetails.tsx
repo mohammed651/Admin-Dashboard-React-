@@ -702,7 +702,7 @@ export default function CourseDetails() {
   }
 
   const courseData: CourseData = currentCourse.data;
-  console.log(courseData);
+  // console.log(courseData);
 
   return (
     <DashboardLayout>

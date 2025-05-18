@@ -48,6 +48,9 @@ export const fetchCourseById = createAsyncThunk(
 export const createNewCourse = createAsyncThunk(
   'course/createNewCourse',
   async (formData, { rejectWithValue }) => {
+    formData.forEach((value, key) => {
+  console.log(`${key}: ${value}`);
+});
     try {
       const response = await axios.post(`${API_URL}/addCourse`, formData, {
         headers: {
@@ -55,6 +58,7 @@ export const createNewCourse = createAsyncThunk(
           'Content-Type': 'multipart/form-data'
         }
       });
+      console.log('Response from createNewCourse:', response.data);
       return response.data;
     } catch (error) {
       console.error('Error creating course:', error.response?.data);
