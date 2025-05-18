@@ -9,6 +9,7 @@ const getAuthHeaders = () => {
   return {
     headers: {
       Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     },
   };
 };
@@ -20,6 +21,7 @@ export const createAssignment = createAsyncThunk(
       console.log(assignmentData);
       
       const response = await axios.post(`${API_URL}`, assignmentData , getAuthHeaders());
+      console.log(response.data);
       return response.data;
     } catch (err) {
       console.log(err);

@@ -52,45 +52,50 @@ function AssignmentDetails({ assignmentId }: AssignmentDetailsProps) {
     };
   }, [dispatch, assignmentId, isMounted]);
 
+  console.log("Current Assignment:", currentAssignment);
+  console.log("Loading:", loading);
+  console.log("Error:", error);
+  console.log("Assignment ID:", assignmentId);
+  
   if (loading) return <div className="p-4">جاري التحميل...</div>;
   if (error) return <div className="p-4 text-red-600">حدث خطأ: {error.message || "Unknown error"}</div>;
   if (!currentAssignment) return <div className="p-4">لم يتم العثور على بيانات الاختبار.</div>;
 
   return (
     <div className="p-4 border rounded shadow-sm bg-white space-y-4">
-      <h2 className="text-xl font-semibold">{currentAssignment.title}</h2>
-      {currentAssignment.description && <p>{currentAssignment.description}</p>}
-      <p><strong>مدة الاختبار:</strong> {currentAssignment.timeLimit} دقيقة</p>
-      <p><strong>درجة النجاح:</strong> {currentAssignment.passingScore}%</p>
+  <h2 className="text-xl font-semibold">{currentAssignment.data.title}</h2>
+  {currentAssignment.data.description && <p>{currentAssignment.data.description}</p>}
+  <p><strong>Time Limit:</strong> {currentAssignment.data.timeLimit} minutes</p>
+  <p><strong>Passing Score:</strong> {currentAssignment.data.passingScore}%</p>
 
-      {currentAssignment.questions?.length > 0 ? (
-        <>
-          <h3 className="text-lg font-medium mt-4">الأسئلة:</h3>
-          <div className="space-y-3">
-            {currentAssignment.questions.map((q, i) => (
-              <div key={q._id || i} className="p-3 border rounded bg-gray-50">
-                <p className="font-semibold">س{i + 1}: {q.content}</p>
-                {q.options?.length > 0 && (
-                  <ul className="list-disc list-inside text-sm text-gray-700 mt-1">
-                    {q.options.map((opt, j) => (
-                      <li key={j}>{opt}</li>
-                    ))}
-                  </ul>
-                )}
-                {q.difficulty && (
-                  <p className="text-xs text-gray-500 mt-1">الصعوبة: {q.difficulty}</p>
-                )}
-                {q.explanation && (
-                  <p className="text-xs text-blue-600 mt-1">شرح: {q.explanation}</p>
-                )}
-              </div>
-            ))}
+  {currentAssignment.data.questions?.length > 0 ? (
+    <>
+      <h3 className="text-lg font-medium mt-4">Questions:</h3>
+      <div className="space-y-3">
+        {currentAssignment.data.questions.map((q, i) => (
+          <div key={q._id || i} className="p-3 border rounded bg-gray-50">
+            <p className="font-semibold">Q{i + 1}: {q.content}</p>
+            {q.options?.length > 0 && (
+              <ul className="list-disc list-inside text-sm text-gray-700 mt-1">
+                {q.options.map((opt, j) => (
+                  <li key={j}>{opt}</li>
+                ))}
+              </ul>
+            )}
+            {q.difficulty && (
+              <p className="text-xs text-gray-500 mt-1">Difficulty: {q.difficulty}</p>
+            )}
+            {q.explanation && (
+              <p className="text-xs text-blue-600 mt-1">Explanation: {q.explanation}</p>
+            )}
           </div>
-        </>
-      ) : (
-        <p className="text-gray-500">لا توجد أسئلة متاحة</p>
-      )}
-    </div>
+        ))}
+      </div>
+    </>
+  ) : (
+    <p className="text-gray-500">No questions available</p>
+  )}
+</div>
   );
 }
 

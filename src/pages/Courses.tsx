@@ -174,12 +174,19 @@ export default function Courses() {
       outComesDescription: [] as LearningOutcome[],
     },
     reviews: [] as string[],
+    careerImage: null as File | null,
+    outcomesImage: null as File | null,
+    careerImagePreview: null as string | null,
+    outcomesImagePreview: null as string | null,
   });
 
   // Refs and states for file uploads
   const courseImageRef = useRef<HTMLInputElement>(null);
   const logoImageRef = useRef<HTMLInputElement>(null);
   const relatedImageRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const careerImageRef = useRef<HTMLInputElement>(null);
+  const outcomesImageRef = useRef<HTMLInputElement>(null);
+
   const [courseImageFile, setCourseImageFile] = useState<File | null>(null);
   const [logoImageFile, setLogoImageFile] = useState<File | null>(null);
   const [courseImagePreview, setCourseImagePreview] = useState<string | null>(
@@ -221,6 +228,52 @@ export default function Courses() {
         return newErrors;
       });
     }
+  };
+  const handleCareerImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setNewCourse((prev) => ({
+        ...prev,
+        careerImage: file,
+        careerImagePreview: URL.createObjectURL(file),
+      }));
+    }
+  };
+
+  const handleRemoveCareerImage = () => {
+    setNewCourse((prev) => ({
+      ...prev,
+      careerImage: null,
+      careerImagePreview: null,
+    }));
+    if (careerImageRef.current) careerImageRef.current.value = "";
+    if (newCourse.careerImagePreview)
+      URL.revokeObjectURL(newCourse.careerImagePreview);
+  };
+
+  // Outcomes Image handling
+  const handleOutcomesImageChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setNewCourse((prev) => ({
+        ...prev,
+        outcomesImage: file,
+        outcomesImagePreview: URL.createObjectURL(file),
+      }));
+    }
+  };
+
+  const handleRemoveOutcomesImage = () => {
+    setNewCourse((prev) => ({
+      ...prev,
+      outcomesImage: null,
+      outcomesImagePreview: null,
+    }));
+    if (outcomesImageRef.current) outcomesImageRef.current.value = "";
+    if (newCourse.outcomesImagePreview)
+      URL.revokeObjectURL(newCourse.outcomesImagePreview);
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -595,6 +648,12 @@ export default function Courses() {
     if (logoImageFile) {
       formData.append("logoImage", logoImageFile);
     }
+    if (newCourse.careerImage) {
+      formData.append("careerImage", newCourse.careerImage);
+    }
+    if (newCourse.outcomesImage) {
+      formData.append("outcomesImage", newCourse.outcomesImage);
+    }
 
     // Add related courses
     newCourse.relatedCourses.forEach((course, index) => {
@@ -644,6 +703,10 @@ export default function Courses() {
             outComesDescription: [],
           },
           reviews: [],
+          careerImage: null,
+          outcomesImage: null,
+          careerImagePreview: null,
+          outcomesImagePreview: null,
         });
         handleRemoveCourseImage();
         handleRemoveLogoImage();
@@ -1602,6 +1665,75 @@ export default function Courses() {
                     {errors.imageError}
                   </p>
                 )}
+              </div>
+              {/* Career Image Upload */}
+              <div className="space-y-2">
+                <Label htmlFor="careerImage">Career Image</Label>
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-2">
+                    <Input
+                      id="careerImage"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleCareerImageChange}
+                      ref={careerImageRef}
+                    />
+                    {newCourse.careerImagePreview && (
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        onClick={handleRemoveCareerImage}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                  {newCourse.careerImagePreview && (
+                    <div className="mt-1">
+                      <img
+                        src={newCourse.careerImagePreview}
+                        alt="Career preview"
+                        className="h-20 rounded-md object-cover border"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Outcomes Image Upload */}
+              <div className="space-y-2">
+                <Label htmlFor="outcomesImage">Outcomes Image</Label>
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-2">
+                    <Input
+                      id="outcomesImage"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleOutcomesImageChange}
+                      ref={outcomesImageRef}
+                    />
+                    {newCourse.outcomesImagePreview && (
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        onClick={handleRemoveOutcomesImage}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                  {newCourse.outcomesImagePreview && (
+                    <div className="mt-1">
+                      <img
+                        src={newCourse.outcomesImagePreview}
+                        alt="Outcomes preview"
+                        className="h-20 rounded-md object-cover border"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
 
               <DialogFooter>

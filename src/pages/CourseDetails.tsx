@@ -115,7 +115,7 @@ export default function CourseDetails() {
   const [assignmentDialogOpen, setAssignmentDialogOpen] = useState(false);
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
-  const [newModule, setNewModule] = useState({ moduleTitle: "", duration: "" });
+  const [newModule, setNewModule] = useState({ moduleTitle: ""});
   const [newTopic, setNewTopic] = useState({ title: "", description: "" });
   const [newVideo, setNewVideo] = useState({
     videoTitle: "",
@@ -176,7 +176,7 @@ export default function CourseDetails() {
         })
       ).unwrap();
 
-      setNewModule({ moduleTitle: "", duration: "" });
+      setNewModule({ moduleTitle: ""});
       setModuleDialogOpen(false);
       toast({
         title: "Success",
@@ -1060,17 +1060,7 @@ export default function CourseDetails() {
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label>Duration *</Label>
-              <Input
-                value={newModule.duration}
-                onChange={(e) =>
-                  setNewModule({ ...newModule, duration: e.target.value })
-                }
-                placeholder="2 weeks"
-                required
-              />
-            </div>
+            
           </div>
           <DialogFooter>
             <Button
