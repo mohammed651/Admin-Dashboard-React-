@@ -48,7 +48,12 @@ export default function Dashboard() {
   }, [dispatch]);
 
   // حساب البيانات المطلوبة
-  const totalViews = courses.reduce((sum, course) => sum + (course.views || 0), 0);
+  const totalViews = Array.isArray(courses)
+  ? courses.reduce((sum, course) => sum + (course.views || 0), 0)
+  : 0;
+
+
+
   const subscribedUsers = users.filter(user => user.isSubscribed === true).length;
   const recentCourses = courses.slice(0, 5);
 
