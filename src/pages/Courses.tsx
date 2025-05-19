@@ -864,7 +864,7 @@ export default function Courses() {
 
                 {/* Job Title - English */}
                 <div className="space-y-2">
-                  <Label htmlFor="jobTitle-en">Job Title (English) *</Label>
+                  <Label htmlFor="jobTitle-en">Title (English) *</Label>
                   <Input
                     id="jobTitle-en"
                     value={newCourse.jobTitle.en}
@@ -880,7 +880,7 @@ export default function Courses() {
 
                 {/* Job Title - Arabic */}
                 <div className="space-y-2">
-                  <Label htmlFor="jobTitle-ar">المسمى الوظيفي (عربي) *</Label>
+                  <Label htmlFor="jobTitle-ar">العنوان  (عربي) *</Label>
                   <Input
                     id="jobTitle-ar"
                     value={newCourse.jobTitle.ar}
@@ -1040,7 +1040,7 @@ export default function Courses() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="IfYouLikeValue">If You Like Value</Label>
+                  <Label htmlFor="IfYouLikeValue">If You Like Value (English)</Label>
                   <Input
                     id="IfYouLikeValue-en"
                     value={newCourse.IfYouLikeValue.en}
@@ -1059,8 +1059,8 @@ export default function Courses() {
                 </div>
                 {/* If You Like Value - Arabic */}
                 <div className="space-y-2">
-                  <Label htmlFor="IfYouLikeValue">
-                    If You Like Value (عربي)
+                  <Label htmlFor="IfYouLikeValue" >
+                    قيم أذا كنت تحب (عربي)
                   </Label>
                   <Input
                     id="IfYouLikeValue-ar"
@@ -1071,6 +1071,7 @@ export default function Courses() {
                     className={
                       errors["IfYouLikeValue.ar"] ? "border-red-500" : ""
                     }
+                    dir="rtl"
                   />
                   {errors["IfYouLikeValue.ar"] && (
                     <p className="text-red-500 text-xs mt-1">

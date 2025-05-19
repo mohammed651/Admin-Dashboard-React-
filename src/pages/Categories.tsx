@@ -249,7 +249,7 @@ export default function Categories() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="categoryImage">Category Image</Label>
-                  <input
+                  <Input
                     id="categoryImage"
                     type="file"
                     accept="image/*"
