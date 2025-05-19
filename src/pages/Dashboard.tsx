@@ -1,9 +1,9 @@
-import { Book, Users, TrendingUp, DollarSign } from "lucide-react";
+import { Book, Users, Eye, UserCheck } from "lucide-react"; // تغيير الأيقونات
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import StatCard from "@/components/dashboard/StatCard";
 import CourseTable from "@/components/dashboard/Course/CourseTable";
-import RevenueChart from "@/components/dashboard/RevenueChart";
-import EnrollmentChart from "@/components/dashboard/EnrollmentChart";
+import ViewsChart from "@/components/dashboard/ViewsChart"; // مكون جديد
+import SubscriptionsChart from "@/components/dashboard/SubscriptionsChart"; // مكون جديد
 import { useDispatch, useSelector } from "react-redux";
 import { ErrorBoundary } from "react-error-boundary";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { fetchAllCourses } from "./../store/slices/courseSlice";
 import { useEffect } from "react";
 import { fetchUsers } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/hooks/use-AppDispatch";
+import { RootState } from "@/store/store"; // تأكد من وجود هذا الملف
 
 function ErrorFallback({
   error,
@@ -35,19 +36,22 @@ function ErrorFallback({
     </div>
   );
 }
+
 export default function Dashboard() {
-  const { courses = [] } = useSelector((state: any) => state.course);
-  const { users } = useSelector((state: any) => state.user);
+  const { courses = [] } = useSelector((state: RootState) => state.course);
+  const { users = [] } = useSelector((state: RootState) => state.user);
   const dispatch = useAppDispatch();
-  console.log("Courses from Redux:", courses);
-  console.log("User from Redux:", users);
+
   useEffect(() => {
     dispatch(fetchAllCourses());
     dispatch(fetchUsers());
-
   }, [dispatch]);
 
-   const recentCourses = Array.isArray(courses) ? courses.slice(0, 5) : [];
+  // حساب البيانات المطلوبة
+  const totalViews = courses.reduce((sum, course) => sum + (course.views || 0), 0);
+  const subscribedUsers = users.filter(user => user.isSubscribed === true).length;
+  const recentCourses = courses.slice(0, 5);
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -67,23 +71,24 @@ export default function Dashboard() {
             trend={{ value: 18, isPositive: true }}
           />
           <StatCard
-            title="Active Enrollments"
-            value="4,921"
-            icon={<TrendingUp size={20} />}
-            trend={{ value: 7, isPositive: true }}
+            title="Total Views"
+            value={totalViews.toLocaleString()}
+            icon={<Eye size={20} />} // أيقونة العين للمشاهدات
+            trend={{ value: 25, isPositive: true }}
           />
           <StatCard
-            title="Total Revenue"
-            value="$124,592"
-            icon={<DollarSign size={20} />}
-            trend={{ value: 21, isPositive: true }}
+            title="Subscribed Users"
+            value={subscribedUsers}
+            icon={<UserCheck size={20} />} // أيقونة المستخدم المشترك
+            trend={{ value: 10, isPositive: true }}
           />
         </div>
 
         <div className="grid gap-6 md:grid-cols-8">
-          <RevenueChart />
-          <EnrollmentChart />
+          <ViewsChart courses={courses} /> {/* مكون جديد لعرض المشاهدات */}
+          <SubscriptionsChart users={users} /> {/* مكون جديد لعرض الاشتراكات */}
         </div>
+
         {/* Recent Courses */}
         <div className="space-y-4">
           <h2 className="text-lg font-medium">Recent Courses</h2>

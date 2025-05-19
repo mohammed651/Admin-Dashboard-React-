@@ -3,7 +3,7 @@ import courseSlice from "./slices/courseSlice";
 import moduleSlice from "./slices/moduleSlice";
 import topicSlice from "./slices/topicSlice";
 import instructorSlice from "./slices/instructorSlice.ts";
-import categorySlice from "./slices/categorySlice";
+import categorySlice from "./slices/categorySlice.js";
 import successStorySlice from "./slices/SuccessStorySlice.ts";
 import userSlice from "./slices/userSlice.ts";
 import { UserState } from "@/types";

@@ -4,6 +4,7 @@ export interface Category {
   _id: string;
   categoryImage: string;
   categoryName: string;
+   courses?: string[];
 }
 interface SocialMedia {
   LinkidIn?: string; // Optional LinkedIn URL
@@ -83,13 +84,14 @@ export interface SuccessStory {
 
 export interface User {
   _id: string;
+
   firstName?: string;
   lastName?: string;
   email: string;
   username: string;
   password?: string; // عادة لا تُرسل من السيرفر لكن أضفناها كاختيارية
   role: 'User' | 'Admin';
-  status: 'active' | 'inactive';
+isSubscribedFilter: "all",
   enrolledCourses?: number;
   joinDate: string;
   phone?: string;
@@ -102,6 +104,7 @@ export interface User {
   createdAt: string;
   updatedAt?: string;
   courses?: [];
+   isSubscribed: boolean;
   // Optional: لو عايز تعرض progress في المستقبل
   progress?: {
     progressCourses: {
@@ -130,7 +133,7 @@ export interface UserState {
   error: string | null;
   searchQuery: string;
   roleFilter: 'all' | 'User' | 'Admin' | 'Instructor'; // Updated to match role types
-  statusFilter: 'all' | 'active' | 'inactive';
+  isSubscribedFilter: "all" | "true" | "false";
   updateLoading: boolean;
   updateSuccess: string | null;
   updateError: string | null;

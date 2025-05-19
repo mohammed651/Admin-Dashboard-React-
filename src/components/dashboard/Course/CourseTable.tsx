@@ -584,6 +584,8 @@ export default function CourseTable({
   if (loading) return <div className="p-4 text-center">Loading courses...</div>;
   if (error) return <div className="p-4 text-center text-red-500">Error loading courses</div>;
 
+  console.log("Filtered Courses:", filteredCourses);
+  
   return (
     <ErrorBoundary
       FallbackComponent={TableErrorFallback}
@@ -593,12 +595,11 @@ export default function CourseTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-center">Id</TableHead>
               <TableHead className="text-center">Title</TableHead>
               <TableHead className="text-center">Instructor</TableHead>
               <TableHead className="text-center">Category</TableHead>
               <TableHead className="text-center">Created At</TableHead>
-              <TableHead className="text-center">Enrollments</TableHead>
+              <TableHead className="text-center">views</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -606,7 +607,7 @@ export default function CourseTable({
             {paginatedCourses.length > 0 ? (
               paginatedCourses.map((course: Course) => (
                 <TableRow key={course._id} className="hover:bg-gray-50">
-                  <TableCell className="text-center">{course.courseId}</TableCell>
+                  
                   <TableCell className="font-medium text-center">
                     {typeof course.name === 'object' ? course.name.en : course.name}
                   </TableCell>
@@ -620,7 +621,7 @@ export default function CourseTable({
                     {course.createdAt ? new Date(course.createdAt).toLocaleDateString() : '-'}
                   </TableCell>
                   <TableCell className="text-center">
-                    {course.enrolled}
+                    {course.views}
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end space-x-1">

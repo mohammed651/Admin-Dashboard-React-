@@ -10,6 +10,12 @@ import {
   Bell,
   Menu,
   X,
+  BarChart2,
+  BookOpen,
+  DollarSign,
+  UserCog,
+  ListTree,
+  GraduationCap,
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { NotificationDropdown } from "./NotificationDropdown";
@@ -17,32 +23,41 @@ import { NotificationDropdown } from "./NotificationDropdown";
 const navigationItems = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Courses", href: "/courses", icon: Book },
-  { name: "Instructors", href: "/instructors", icon: Users },
-  { name: "Categories", href: "/categories", icon: ChartBar },
-  { name: "Users", href: "/users", icon: Users },
-  { name: "Success Stories", href: "/SuccessStory", icon: Users },
-  { name: "Analytics", href: "/analytics", icon: ChartBar },
-  { name: "Revenue", href: "/revenue", icon: ChartBar },
+  { name: "Instructors", href: "/instructors", icon: GraduationCap },
+  { name: "Categories", href: "/categories", icon: ListTree },
+  { name: "Users", href: "/users", icon: UserCog },
+  { name: "Success Stories", href: "/SuccessStory", icon: BookOpen },
+  { name: "Analytics", href: "/analytics", icon: BarChart2 },
+  { name: "Revenue", href: "/revenue", icon: DollarSign },
   { name: "Settings", href: "/settings", icon: Settings },
 ];
-const email = localStorage.getItem("email");
-const username = localStorage.getItem("username");
-const userImage = localStorage.getItem("userImage");
 
 export default function Sidebar({ isMobileOpen, onClose }: { isMobileOpen?: boolean, onClose?: () => void }) {
   const [expanded, setExpanded] = useState(true);
   const isMobile = useIsMobile();
+  const [userData, setUserData] = useState({
+    email: '',
+    username: '',
+    userImage: ''
+  });
 
   useEffect(() => {
     if (isMobile) {
       setExpanded(false);
     }
+    
+    // Load user data from localStorage
+    const email = localStorage.getItem("email") || '';
+    const username = localStorage.getItem("username") || '';
+    const userImage = localStorage.getItem("userImage") || '';
+    
+    setUserData({ email, username, userImage });
   }, [isMobile]);
 
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 h-screen transition-all duration-300 flex flex-col  fixed lg:relative z-50",
+        "bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 h-screen transition-all duration-300 flex flex-col fixed lg:relative z-50",
         expanded ? "w-64" : "w-20",
         isMobile && !isMobileOpen ? "hidden" : "block",
         isMobile ? "left-0 top-0" : ""
@@ -93,24 +108,30 @@ export default function Sidebar({ isMobileOpen, onClose }: { isMobileOpen?: bool
         </nav>
       </div>
 
+      {/* User profile section */}
       <div className="p-4 border-t border-gray-200 dark:border-gray-800">
         <div className={cn("flex items-center", expanded ? "justify-between" : "justify-center")}>
           <div className="flex items-center space-x-3">
-            <div className="relative">
-              <NotificationDropdown />
-            </div>
-            {expanded && (
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 rounded-full bg-coursera-blue text-white flex items-center justify-center font-bold">
-                  {username?.charAt(0) || 'A'}
-                </div>
+            {userData.userImage ? (
+              <img 
+                src={userData.userImage} 
+                alt="User avatar" 
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-coursera-blue text-white flex items-center justify-center font-bold">
+                {userData.username?.charAt(0) || 'A'}
               </div>
             )}
           </div>
           {expanded && (
-            <div>
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{username}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{email}</p>
+            <div className="flex-1 ml-3 overflow-hidden">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">
+                {userData.username}
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                {userData.email}
+              </p>
             </div>
           )}
         </div>

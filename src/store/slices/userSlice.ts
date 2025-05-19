@@ -11,7 +11,7 @@ const initialState: UserState = {
   error: null,
   searchQuery: "",
   roleFilter: "all",
-  statusFilter: "all",
+  isSubscribedFilter: "all", // تغيير من statusFilter إلى isSubscribedFilter
   updateLoading: false,
   updateSuccess: null,
   updateError: null,
@@ -137,7 +137,7 @@ export const updateOwnUser = createAsyncThunk<
 });
 
 export const selectFilteredUsers = (state: RootState): User[] => {
-  const { users, searchQuery, roleFilter, statusFilter } = state.user;
+  const { users, searchQuery, roleFilter, isSubscribedFilter } = state.user;
 
   return users.filter((user) => {
     const matchesSearch =
@@ -145,10 +145,11 @@ export const selectFilteredUsers = (state: RootState): User[] => {
       user.lastName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.email.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesRole = roleFilter === "all" || user.role === roleFilter;
-    const matchesStatus =
-      statusFilter === "all" || user.status === statusFilter;
+    const matchesSubscription = 
+      isSubscribedFilter === "all" || 
+      (isSubscribedFilter === "true" ? user.isSubscribed : !user.isSubscribed);
 
-    return matchesSearch && matchesRole && matchesStatus;
+    return matchesSearch && matchesRole && matchesSubscription;
   });
 };
 
@@ -179,17 +180,14 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setSearchQuery: (state, action: PayloadAction<string>) => {
-      state.searchQuery = action.payload;
-    },
-    setRoleFilter: (state, action: PayloadAction<UserState["roleFilter"]>) => {
-      state.roleFilter = action.payload;
-    },
-    setStatusFilter: (
-      state,
-      action: PayloadAction<UserState["statusFilter"]>
-    ) => {
-      state.statusFilter = action.payload;
-    },
+    state.searchQuery = action.payload;
+  },
+  setRoleFilter: (state, action: PayloadAction<UserState["roleFilter"]>) => {
+    state.roleFilter = action.payload;
+  },
+  setIsSubscribedFilter: (state, action: PayloadAction<"all" | "true" | "false">) => {
+    state.isSubscribedFilter = action.payload;
+  },
   },
   extraReducers: (builder) => {
     builder
@@ -260,6 +258,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setSearchQuery, setRoleFilter, setStatusFilter } =
+export const { setSearchQuery, setRoleFilter, setIsSubscribedFilter  } =
   userSlice.actions;
 export default userSlice;
